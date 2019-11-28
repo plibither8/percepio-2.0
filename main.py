@@ -37,16 +37,6 @@ class Color:
 def dist(a, b):
     return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
 
-# color wider range of pixels when generating image
-def put_color(data, m, n):
-    for i in range(m - 5, m + 5):
-        if not 0 < i < len(data):
-            continue
-        for j in range(n - 5, n + 5):
-            if not 0 < j < len(data[m]):
-                continue
-            data[i, j] = Color.WHITE
-
 # main start initiate func
 def start(device, flip=0):
     frame_count = 0
