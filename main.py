@@ -1,0 +1,185 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import cv2
+import numpy as np
+import time
+from PIL import Image
+from collections import deque
+
+# Color info
+class Color:
+    WHITE = [0xFF, 0xFF, 0xFF]
+    ORANGE = [0, 97, 0xFF]
+    BLUE = [0xFF, 0, 0]
+
+# distance between two pixels
+def dist(a, b):
+    return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+
+# color wider range of pixels when generating image
+def put_color(data, m, n):
+    for i in range(m - 5, m + 5):
+        if not 0 < i < len(data):
+            continue
+        for j in range(n - 5, n + 5):
+            if not 0 < j < len(data[m]):
+                continue
+            data[i, j] = Color.WHITE
+
+# main start initiate func
+def start(device):
+    frame_count = 0
+
+    cap = cv2.VideoCapture(device)
+
+    cap_height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    cap_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+
+    # gesture matching initialization
+    gesture_template = cv2.imread('gesture_template.png')
+    gesture_template = cv2.cvtColor(gesture_template, cv2.COLOR_BGR2GRAY)
+    (gesture_template, _) = cv2.findContours(gesture_template, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
+    # skin color segmentation mask
+    skin_min = np.array([0, 40, 50], np.uint8)  # HSV mask
+    skin_max = np.array([50, 250, 0xFF], np.uint8)  # HSV mask
+
+    # trajectory drawing initialization
+    topmost_last = (int(cap_width / 4), int(cap_height / 4))  # initial position of finger cursor
+    traj = np.array([], np.uint16)
+    traj = np.append(traj, topmost_last)
+    dist_pts = 0
+    dist_records = [dist_pts]
+
+    # initiate trajectory's color data array with zeros
+    traj_color_data = np.zeros((int(cap_height), int(cap_width), 3), np.uint8)
+
+    # finger cursor position low_pass filter
+    low_filter_size = 5
+    low_filter = deque([topmost_last for i in range(low_filter_size)], low_filter_size)  # filter size is 5
+
+    # gesture_index low_pass filter
+    gesture_filter_size = 5
+    gesture_matching_filter = deque([0. for i in range(gesture_filter_size)], gesture_filter_size)
+    gesture_index_thres = 5
+
+    # some kernels
+    kernel_size = 5
+    kernel1 = np.ones((kernel_size, kernel_size), np.float32) / kernel_size ** 2
+
+    while cap.isOpened():
+        frame_count += 1
+
+        # Capture frame-by-frame
+
+        (ret, frame_raw) = cap.read()
+        while not ret:
+            (ret, frame_raw) = cap.read()
+        if not device:
+            frame_raw = cv2.flip(frame_raw, 1)
+        frame = frame_raw[:round(cap_height), :round(cap_width)]  # ROI of the image
+
+        # Color seperation and noise cancellation at HSV color space
+        hsv   = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        mask  = cv2.inRange(hsv, skin_min, skin_max)
+        res   = cv2.bitwise_and(hsv, hsv, mask=mask)
+        res   = cv2.erode(res, kernel1, iterations=1)
+        res   = cv2.dilate(res, kernel1, iterations=1)
+
+        # Canny edge detection at Gray space.
+        rgb   = cv2.cvtColor(res, cv2.COLOR_HSV2BGR)
+        gray  = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
+        gray  = cv2.GaussianBlur(gray, (11, 11), 0)
+
+        # main function: find finger cursor position & draw trajectory
+        (contours, _) = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # find all contours in the image
+        if len(contours) > 0:
+            biggest_contour = max(contours, key=cv2.contourArea)  # find biggest contour in the image
+            if cv2.contourArea(biggest_contour) > 1000:
+                topmost = tuple(biggest_contour[biggest_contour[:, :, 1].argmin()][0])  # consider the topmost point of the biggest contour as cursor
+
+                # get matching score, smaller the better by comparing contour of
+                # predefined image with that of drawn gesture
+                gesture_index = cv2.matchShapes(biggest_contour, gesture_template[0], 1, 0.)
+
+                # obtain average gesture matching index using gesture matching low_pass filter
+                gesture_matching_filter.append(gesture_index)
+                average_gesture_index = sum(gesture_matching_filter) / gesture_filter_size
+
+                dist_pts = dist(topmost, topmost_last)  # calculate the distance of last cursor position and current cursor position
+                if dist_pts < 150:  # filter big position change of cursor
+                    cv2.drawContours(rgb, [biggest_contour], 0, (0, 0xFF, 0), 5)
+                    low_filter.append(topmost)
+
+                    sum_x = 0
+                    sum_y = 0
+                    for i in low_filter:
+                        sum_x += i[0]
+                        sum_y += i[1]
+
+                    topmost = (sum_x // low_filter_size, sum_y // low_filter_size)
+
+                    # every 120/30 = 4seconds
+                    if frame_count % 120 is 0 and frame_count > 0:
+                        # save image of color data of trajectory
+                        img = Image.fromarray(traj_color_data)
+                        img.save(time.ctime().replace(':', '.') + '.png')
+
+                        traj = np.array([], np.uint16)
+                        traj = np.append(traj, topmost_last)
+                        traj_color_data = np.zeros((int(cap_height), int(cap_width), 3), np.uint8)
+
+                        dist_pts = 0
+                        dist_records = [dist_pts]
+
+                    if gesture_index < gesture_index_thres:
+                        traj = np.append(traj, topmost)
+                        dist_records.append(dist_pts)
+
+                        put_color(traj_color_data, topmost[1], topmost[0])
+
+                    else:
+                        traj = np.array([], np.uint16)
+                        traj = np.append(traj, topmost_last)
+                        traj_color_data = np.zeros((int(cap_height), int(cap_width), 3), np.uint8)
+
+                        dist_pts = 0
+                        dist_records = [dist_pts]
+
+                    topmost_last = topmost  # update cursor position
+
+        for i in range(2, len(dist_records)):
+            thickness = int(-0.072 * dist_records[i] + 13)
+            cv2.line(
+                frame,
+                (traj[i * 2 - 2], traj[i * 2 - 1]),
+                (traj[i * 2], traj[i * 2 + 1]),
+                Color.ORANGE,
+                thickness
+            )
+            cv2.line(
+                rgb,
+                (traj[i * 2 - 2],
+                traj[i * 2 - 1]),
+                (traj[i * 2], traj[i * 2 + 1]),
+                Color.ORANGE,
+                thickness
+            )
+
+        cv2.circle(frame, topmost_last, 10, Color.BLUE, 3)
+        cv2.circle(rgb, topmost_last, 10, Color.BLUE, 3)
+
+        cv2.imshow('frame', frame_raw)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # # When everything done, release the capture
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    device = 0  # if device = 0, use the built-in computer camera
+    start(device)
