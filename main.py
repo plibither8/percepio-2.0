@@ -45,14 +45,11 @@ def start(device):
     skin_max = np.array([50, 250, 0xFF], np.uint8)  # HSV mask
 
     # trajectory drawing initialization
-    topmost_last = (int(cap_width / 4), int(cap_height / 4))  # initial position of finger cursor
-    traj = np.array([], np.uint16)
-    traj = np.append(traj, topmost_last)
-    dist_pts = 0
-    dist_records = [dist_pts]
-
-    # initiate trajectory's color data array with zeros
-    traj_color_data = np.zeros((int(cap_height), int(cap_width), 3), np.uint8)
+    topmost_last    = (int(cap_width / 4), int(cap_height / 4))  # initial position of finger cursor
+    traj            = np.array([], np.uint16)
+    traj            = np.append(traj, topmost_last)
+    dist_pts        = 0
+    dist_records    = [dist_pts]
 
     # finger cursor position low_pass filter
     low_filter_size = 5
@@ -65,7 +62,7 @@ def start(device):
 
     # some kernels
     kernel_size = 5
-    kernel1 = np.ones((kernel_size, kernel_size), np.float32) / kernel_size ** 2
+    kernel = np.ones((kernel_size, kernel_size), np.float32) / kernel_size ** 2
 
     while cap.isOpened():
         frame_count += 1
@@ -83,8 +80,8 @@ def start(device):
         hsv   = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask  = cv2.inRange(hsv, skin_min, skin_max)
         res   = cv2.bitwise_and(hsv, hsv, mask=mask)
-        res   = cv2.erode(res, kernel1, iterations=1)
-        res   = cv2.dilate(res, kernel1, iterations=1)
+        res   = cv2.erode(res, kernel, iterations=1)
+        res   = cv2.dilate(res, kernel, iterations=1)
 
         # Canny edge detection at Gray space.
         rgb   = cv2.cvtColor(res, cv2.COLOR_HSV2BGR)
@@ -119,34 +116,20 @@ def start(device):
 
                     topmost = (sum_x // low_filter_size, sum_y // low_filter_size)
 
-                    # every 120/30 = 4seconds
-                    if frame_count % 120 is 0 and frame_count > 0:
-                        # save image of color data of trajectory
-                        img = Image.fromarray(traj_color_data)
-                        img.save(time.ctime().replace(':', '.') + '.png')
-
-                        traj = np.array([], np.uint16)
-                        traj = np.append(traj, topmost_last)
-                        traj_color_data = np.zeros((int(cap_height), int(cap_width), 3), np.uint8)
-
-                        dist_pts = 0
-                        dist_records = [dist_pts]
-
                     if gesture_index < gesture_index_thres:
                         traj = np.append(traj, topmost)
                         dist_records.append(dist_pts)
 
-                        put_color(traj_color_data, topmost[1], topmost[0])
-
                     else:
                         traj = np.array([], np.uint16)
                         traj = np.append(traj, topmost_last)
-                        traj_color_data = np.zeros((int(cap_height), int(cap_width), 3), np.uint8)
 
                         dist_pts = 0
                         dist_records = [dist_pts]
 
                     topmost_last = topmost  # update cursor position
+
+        trace = np.zeros((int(cap_height), int(cap_width), 3), np.uint8)
 
         for i in range(2, len(dist_records)):
             thickness = int(-0.072 * dist_records[i] + 13)
@@ -158,18 +141,34 @@ def start(device):
                 thickness
             )
             cv2.line(
-                rgb,
-                (traj[i * 2 - 2],
-                traj[i * 2 - 1]),
+                trace,
+                (traj[i * 2 - 2], traj[i * 2 - 1]),
                 (traj[i * 2], traj[i * 2 + 1]),
-                Color.ORANGE,
+                Color.WHITE,
                 thickness
             )
 
-        cv2.circle(frame, topmost_last, 10, Color.BLUE, 3)
-        cv2.circle(rgb, topmost_last, 10, Color.BLUE, 3)
+        # pointer circle
+        cv2.circle(
+            frame,
+            topmost_last,
+            10,
+            Color.BLUE,
+            3
+        )
 
+        cv2.imshow('trace', trace)
         cv2.imshow('frame', frame_raw)
+
+        # every 180/30 = 6seconds
+        if frame_count % 180 is 0 and frame_count > 0:
+            cv2.imwrite('./digits/0/' + time.ctime().replace(':', '.') + '.jpg', trace)
+
+            traj = np.array([], np.uint16)
+            traj = np.append(traj, topmost_last)
+
+            dist_pts = 0
+            dist_records = [dist_pts]
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
