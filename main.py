@@ -3,8 +3,29 @@
 import cv2
 import numpy as np
 import time
+import requests
+import json
 from PIL import Image
 from collections import deque
+
+def recognise(filename):
+    payload = {
+        'apikey': '9f717df33488957',
+        'OCREngine': 2,
+        'scale': True
+    }
+    with open(filename, 'rb') as f:
+        r = requests.post(
+            'https://api.ocr.space/parse/image',
+            files={filename: f},
+            data=payload,
+        )
+    response = json.loads(r.content.decode())
+    parsed_results = response["ParsedResults"]
+
+    if len(parsed_results) > 0:
+        parsed_text = parsed_results[0]['ParsedText']
+        print(parsed_text)
 
 # Color info
 class Color:
@@ -27,7 +48,7 @@ def put_color(data, m, n):
             data[i, j] = Color.WHITE
 
 # main start initiate func
-def start(device):
+def start(device, flip=0):
     frame_count = 0
 
     cap = cv2.VideoCapture(device)
@@ -72,7 +93,7 @@ def start(device):
         (ret, frame_raw) = cap.read()
         while not ret:
             (ret, frame_raw) = cap.read()
-        if not device:
+        if flip:
             frame_raw = cv2.flip(frame_raw, 1)
         frame = frame_raw[:round(cap_height), :round(cap_width)]  # ROI of the image
 
@@ -160,15 +181,18 @@ def start(device):
         cv2.imshow('trace', trace)
         cv2.imshow('frame', frame_raw)
 
-        # every 180/30 = 6seconds
-        if frame_count % 180 is 0 and frame_count > 0:
-            cv2.imwrite('./digits/0/' + time.ctime().replace(':', '.') + '.jpg', trace)
+        # every 240/30 = 8seconds
+        if frame_count % 240 is 0 and frame_count > 0:
+            filename = './output/' + time.ctime().replace(':', '.') + '.jpg'
+            cv2.imwrite(filename, trace)
 
             traj = np.array([], np.uint16)
             traj = np.append(traj, topmost_last)
 
             dist_pts = 0
             dist_records = [dist_pts]
+
+            recognise(filename)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
