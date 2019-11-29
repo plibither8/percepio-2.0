@@ -195,10 +195,8 @@ def start(device, flip=0):
 
         cv2.imshow('frame', frame_raw)
 
-        # every 210/30 = 8seconds
-        if frame_count % 210 is 0 and frame_count > 0:
-            text_image = np.zeros((width, height, 3), dtype=np.uint8 )
-
+        # every 240/30 = 8seconds
+        if frame_count % 240 is 0 and frame_count > 0:
             filename = './output/' + str(time.time()) + '.jpg'
             cv2.imwrite(filename, trace)
 
@@ -208,7 +206,23 @@ def start(device, flip=0):
             dist_pts = 0
             dist_records = [dist_pts]
 
+            text_image = np.zeros((width, height, 3), dtype=np.uint8 )
+            cv2.putText(
+                text_image,
+                "Loading...",
+                (int(1 * width / 4), int(height / 2)),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                2,
+                Color.WHITE,
+                3,
+                cv2.LINE_AA,
+                True
+            )
+            cv2.imshow('character', text_image)
+
             text = recognise(filename)
+            text_image = np.zeros((width, height, 3), dtype=np.uint8 )
+
             if (text.strip() == ''):
                 cv2.putText(
                     text_image,
@@ -247,5 +261,5 @@ def start(device, flip=0):
 
 
 if __name__ == '__main__':
-    device = 0  # if device = 0, use the built-in computer camera
-    start(device,1)
+    device = 2  # if device = 0, use the built-in computer camera
+    start(device)
