@@ -97,7 +97,8 @@ def start(device, flip=0):
     cv2.imshow('character', text_image)
 
     while cap.isOpened():
-        frame_count += 1
+        if frame_count is not 0:
+            frame_count += 1
 
         # Capture frame-by-frame
 
@@ -151,6 +152,9 @@ def start(device, flip=0):
                     if gesture_index < gesture_index_thres:
                         traj = np.append(traj, topmost)
                         dist_records.append(dist_pts)
+
+                        if frame_count is 0:
+                            frame_count = 1
 
                     else:
                         traj = np.array([], np.uint16)
