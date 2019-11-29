@@ -8,6 +8,8 @@ import json
 from PIL import Image
 from collections import deque
 
+import screeninfo
+
 def recognise(filename):
     payload = {
         'apikey': '9f717df33488957',
@@ -26,12 +28,16 @@ def recognise(filename):
     if len(parsed_results) > 0:
         parsed_text = parsed_results[0]['ParsedText']
         print(parsed_text)
+        return parsed_text
+
+    return ''
 
 # Color info
 class Color:
     WHITE = [0xFF, 0xFF, 0xFF]
     ORANGE = [0, 97, 0xFF]
     BLUE = [0xFF, 0, 0]
+    RED = [0, 0, 255]
 
 # distance between two pixels
 def dist(a, b):
@@ -74,6 +80,21 @@ def start(device, flip=0):
     # some kernels
     kernel_size = 5
     kernel = np.ones((kernel_size, kernel_size), np.float32) / kernel_size ** 2
+
+
+    screen = screeninfo.get_monitors()[0]
+    width, height = int(screen.width / 2), screen.height
+
+    cv2.namedWindow('frame', cv2.WINDOW_NORMAL)
+    cv2.moveWindow('frame', 0, 0)
+    cv2.resizeWindow('frame', (width, height))
+
+    text_image = np.zeros((width, height, 3), dtype=np.uint8 )
+
+    cv2.namedWindow('character', cv2.WINDOW_NORMAL)
+    cv2.moveWindow('character', width, 0)
+    cv2.resizeWindow('character', (width, height))
+    cv2.imshow('character', text_image)
 
     while cap.isOpened():
         frame_count += 1
@@ -168,12 +189,13 @@ def start(device, flip=0):
             3
         )
 
-        cv2.imshow('trace', trace)
         cv2.imshow('frame', frame_raw)
 
         # every 240/30 = 8seconds
         if frame_count % 240 is 0 and frame_count > 0:
-            filename = './output/' + time.ctime().replace(':', '.') + '.jpg'
+            text_image = np.zeros((width, height, 3), dtype=np.uint8 )
+
+            filename = './output/' + str(time.time()) + '.jpg'
             cv2.imwrite(filename, trace)
 
             traj = np.array([], np.uint16)
@@ -182,12 +204,39 @@ def start(device, flip=0):
             dist_pts = 0
             dist_records = [dist_pts]
 
-            recognise(filename)
+            text = recognise(filename)
+            if (text.strip() == ''):
+                cv2.putText(
+                    text_image,
+                    "No text found",
+                    (int(1 * width / 4), int(height / 2)),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    2,
+                    Color.RED,
+                    3,
+                    cv2.LINE_AA,
+                    True
+                )
+            else:
+                cv2.putText(
+                    text_image,
+                    text,
+                    (int(3 * width / 8), int(height / 4)),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    20,
+                    Color.WHITE,
+                    10,
+                    cv2.LINE_AA,
+                    True
+                )
+
+            text_image = cv2.flip(text_image, 0)
+            cv2.imshow('character', text_image)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-    # # When everything done, release the capture
+    # When everything done, release the capture
 
     cap.release()
     cv2.destroyAllWindows()
@@ -195,4 +244,4 @@ def start(device, flip=0):
 
 if __name__ == '__main__':
     device = 0  # if device = 0, use the built-in computer camera
-    start(device)
+    start(device,1)
