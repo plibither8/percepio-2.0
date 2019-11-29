@@ -191,8 +191,8 @@ def start(device, flip=0):
 
         cv2.imshow('frame', frame_raw)
 
-        # every 240/30 = 8seconds
-        if frame_count % 240 is 0 and frame_count > 0:
+        # every 210/30 = 8seconds
+        if frame_count % 210 is 0 and frame_count > 0:
             text_image = np.zeros((width, height, 3), dtype=np.uint8 )
 
             filename = './output/' + str(time.time()) + '.jpg'
