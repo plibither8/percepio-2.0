@@ -1,10 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import cv2
 import numpy as np
 import time
 import requests
 import json
+import os
 from PIL import Image
 from collections import deque
 
@@ -12,7 +11,7 @@ import screeninfo
 
 def recognise(filename):
     payload = {
-        'apikey': '9f717df33488957',
+        'apikey': os.environ['OCR_SPACE_TOKEN'],
         'OCREngine': 2,
         'scale': True
     }
