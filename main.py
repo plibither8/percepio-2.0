@@ -4,10 +4,9 @@ import time
 import requests
 import json
 import os
+import screeninfo
 from PIL import Image
 from collections import deque
-
-import screeninfo
 
 def recognise(filename):
     payload = {
