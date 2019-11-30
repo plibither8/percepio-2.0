@@ -193,8 +193,8 @@ def start(device, flip=0):
 
         cv2.imshow('frame', frame_raw)
 
-        # every 240/30 = 8seconds
-        if frame_count % 240 is 0 and frame_count > 0:
+        # every 210/30 = 8seconds
+        if frame_count % 210 is 0 and frame_count > 0:
             filename = './output/' + str(time.time()) + '.jpg'
             cv2.imwrite(filename, trace)
 
@@ -259,5 +259,7 @@ def start(device, flip=0):
 
 
 if __name__ == '__main__':
-    device = 2  # if device = 0, use the built-in computer camera
-    start(device)
+    # device = 0 => built-in computer camera
+    # device = 1/2.. => externally attached
+    device = 0
+    start(device, flip=0)
