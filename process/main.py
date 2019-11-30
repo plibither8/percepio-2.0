@@ -147,7 +147,7 @@ def start(device, flip=0):
 
                     topmost = (sum_x // low_filter_size, sum_y // low_filter_size)
 
-                    if gesture_index < gesture_index_thres:
+                    if average_gesture_index < gesture_index_thres:
                         traj = np.append(traj, topmost)
                         dist_records.append(dist_pts)
 
