@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 4096 690.58" aria-hidden="true">
+  <style>
+    .anim-hide { visibility: hidden; }
+  </style>
+  <defs>
+    <path id="h-wave" d="M0 0v690.58s365.72 11.77 800.48-160.7c263.68-104.61 593.41 42.08 800.73 27.26 181-12.95 178.54-61.69 347.77-91.17s266.94 7.16 503.74-122.81c172.6-94.74 451.68-314.28 856.62-245.79S4096 109 4096 0z"></path>
+    <mask id="h-mask" fill="white" class="hero-mask">
+      <rect width="100%" height="100%" y="74"></rect>
+    </mask>
+    <linearGradient data="blue" id="h-e" y1="345.37" x2="4096" y2="345.37" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6f0084"></stop>
+      <stop offset=".1" stop-color="#59238a"></stop>
+      <stop offset=".28" stop-color="#335e93"></stop>
+      <stop offset=".43" stop-color="#178a9a"></stop>
+      <stop offset=".55" stop-color="#06a49e"></stop>
+      <stop offset=".62" stop-color="#00aea0"></stop>
+    </linearGradient>
+    <linearGradient data="darken" id="h-d" x1="851.36" y1="-851.36" x2="2909.93" y2="1207.22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#010758"></stop>
+      <stop offset=".6" stop-color="#010758" stop-opacity=".2"></stop>
+      <stop offset="1" stop-color="#010758" stop-opacity="0"></stop>
+    </linearGradient>
+    <linearGradient data="lighten" id="h-h" y1="345.37" x2="4096" y2="345.37" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"></stop>
+      <stop offset=".44" stop-color="#fbfefe" stop-opacity=".01"></stop>
+      <stop offset=".6" stop-color="#eafcfa" stop-opacity=".04"></stop>
+      <stop offset=".72" stop-color="#cef7f4" stop-opacity=".1"></stop>
+      <stop offset=".81" stop-color="#a6f1eb" stop-opacity=".17"></stop>
+      <stop offset=".89" stop-color="#72e8df" stop-opacity=".28"></stop>
+      <stop offset=".96" stop-color="#32ded1" stop-opacity=".4"></stop>
+      <stop offset="1" stop-color="#00d6c6" stop-opacity=".5"></stop>
+    </linearGradient>
+    <clipPath id="h-i">
+      <path d="M2696.67 0v203.76c-50.47 25.58-96.52 52.41-138.3 77.33-38.87 23.18-74 44.72-105.65 62.07-34.54 19-66.12 34.37-95.39 46.95-129.55 55.73-214 56.17-309.85 63.93V0z" fill="none"></path>
+    </clipPath>
+    <linearGradient id="h-a" x1="2157.59" y1="347.13" x2="2290.94" y2="347.13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6f0084"></stop>
+      <stop offset="1" stop-color="#00aea0"></stop>
+    </linearGradient>
+    <linearGradient id="h-j" x1="2260.84" y1="63.28" x2="2429.72" y2="63.28" xlink:href="#h-a"></linearGradient>
+    <linearGradient id="h-k" x1="2362.2" y1="222.38" x2="2423.77" y2="222.38" xlink:href="#h-a"></linearGradient>
+    <linearGradient id="h-l" x1="2338.26" y1="337.17" x2="2432.61" y2="337.17" xlink:href="#h-a"></linearGradient>
+    <linearGradient id="h-m" x1="2321.46" y1="361.59" x2="2400.52" y2="361.59" xlink:href="#h-a"></linearGradient>
+    <linearGradient id="h-c" x1="2500.65" y1="264.92" x2="2546.44" y2="264.92" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00aea0"></stop>
+      <stop offset="1" stop-color="#b800aa"></stop>
+    </linearGradient>
+    <linearGradient id="h-b" x1="2142.12" y1="229.07" x2="2300.42" y2="229.07" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b800aa"></stop>
+      <stop offset="1" stop-color="#00aea0"></stop>
+    </linearGradient>
+    <linearGradient id="h-n" x1="2392.79" y1="173.56" x2="2429.99" y2="173.56" xlink:href="#h-b"></linearGradient>
+    <linearGradient id="h-o" x1="2468.89" y1="166.19" x2="2473.81" y2="166.19" xlink:href="#h-b"></linearGradient>
+    <linearGradient id="h-p" x1="2549.53" y1="100.08" x2="2638.28" y2="100.08" xlink:href="#h-c"></linearGradient>
+    <linearGradient id="h-q" x1="2223.08" y1="136.43" x2="2335.94" y2="136.43" xlink:href="#h-b"></linearGradient>
+    <linearGradient id="h-r" x1="2414.67" y1="30.9" x2="2433.66" y2="30.9" xlink:href="#h-c"></linearGradient>
+    <linearGradient id="h-s" x1="2327.79" y1="230.73" x2="2405.03" y2="230.73" xlink:href="#h-b"></linearGradient>
+    <linearGradient id="h-t" x1="2511.38" y1="97.61" x2="2532.34" y2="97.61" gradientTransform="rotate(2.69 2607.494612 195.31943)" xlink:href="#h-c"></linearGradient>
+    <linearGradient id="h-u" x1="2515.3" y1="131.86" x2="2627.74" y2="131.86" xlink:href="#h-a"></linearGradient>
+    <linearGradient id="h-v" x1="2126.98" y1="307.08" x2="2277.4" y2="307.08" gradientTransform="rotate(3.47 2146.796864 352.809564)" xlink:href="#h-b"></linearGradient>
+    <linearGradient id="h-w" x1="2449.94" y1="328.68" x2="2469.25" y2="347.98" xlink:href="#h-d"></linearGradient>
+    <linearGradient id="h-x" x1="2565.67" y1="513.73" x2="2336.4" y2="181.52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00d6c6" stop-opacity=".5"></stop>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>
+    </linearGradient>
+  </defs>
+  <g data-name="Wave">
+    <use xlink:href="#h-wave" fill="url(#h-e)"></use>
+    <use xlink:href="#h-wave" fill="url(#h-g)"></use>
+    <use xlink:href="#h-wave" fill="url(#h-d)"></use>
+    <use xlink:href="#h-wave" fill="url(#h-h)"></use>
+    <use class="bk1" xlink:href="#h-wave" fill="#19427A" style="opacity: 0;"></use>
+  </g>
+  
+</svg>

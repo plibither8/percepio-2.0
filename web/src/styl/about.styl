@@ -1,0 +1,118 @@
+@require "imports/base"
+
+html, body
+	overflow-x: hidden
+
+.wave-background
+	position: absolute
+	z-index: 0
+	height: 70vh
+	overflow-x: hidden
+
+	svg
+		height: 100%
+		position: relative
+		left: -30%
+		overflow-x: hidden
+
+section
+	width: 95%
+	max-width: 900px
+	margin: 60px auto
+	background: #ffffffde
+	padding: 30px
+	border-radius: 10px
+	box-shadow: 0 0 10px #ddd
+
+	h1
+		font-size: 35px
+		margin-bottom: 20px
+
+section.about
+	h2
+		margin: 20px 0
+		font-size: 25px
+		color: #222
+
+	p, li
+		padding: 10px 0
+		line-height: 1.5
+		font-size: 18px
+
+		&.source
+			font-style: italic
+			border-left: 4px solid #ccc
+			padding-left: 10px
+			background: #eee
+
+		&.by
+			text-align: right
+			font-weight: 500
+
+	li
+		margin-left: 10px
+		list-style-position: inside
+		list-style-type: none
+
+		&::before
+			content: '—'
+			margin-right: 10px
+
+section.timeline
+	.graph
+		.node
+			margin: 10px 0
+			.date
+				margin: 5px 0
+				display: flex
+				align-items: center
+				.circle
+					height: 15px
+					width: 15px
+					background: #aeecf3
+					border-radius: 50%
+					margin-right: 20px
+					border: 2px solid #45d2e2
+				h2
+					font-size: 18px
+			.para
+				margin-left: 5px
+				border-left: 5px solid #aeecf3
+				padding: 10px 0 10px 20px
+
+
+section.team
+	.gallery
+		display: flex
+		flex-wrap: wrap
+		justify-content: space-around
+
+		.card
+			border-radius: 10px
+			box-shadow: 0 0 10px #ddd
+			margin: 20px
+
+		img
+			width: 300px
+			height: auto
+			border-top-left-radius: 10px
+			border-top-right-radius: 10px
+
+		h2
+			margin: 10px 20px
+
+		p
+			font-size: 20px
+			font-style: italic
+			color: #333
+			margin: 10px 20px
+
+
+section.proposal
+	font-size: 20px
+
+	a
+		color: #1f3a75
+		font-weight: 500
+
+@import "imports/nav"

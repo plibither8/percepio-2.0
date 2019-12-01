@@ -23,7 +23,8 @@ module.exports = (env, argv) => ({
 	},
 	stats: 'errors-only',
 	entry: {
-		'index': './src/js/index'
+		'index': './src/js/index',
+		'about': './src/js/about'
 	},
 	output: {
 		path: path.join(__dirname, 'dist'),
@@ -41,7 +42,7 @@ module.exports = (env, argv) => ({
 		new WriteFilePlugin(),
 		new CopyWebpackPlugin([
 			{
-				from: 'assets',
+				from: 'src/assets',
 				to: 'assets'
 			}
 		]),
@@ -50,11 +51,16 @@ module.exports = (env, argv) => ({
 			filename: 'index.html',
 			inject: false
 		}),
+		new HtmlWebpackPlugin({
+			template: './src/pug/about.pug',
+			filename: 'about.html',
+			inject: false
+		}),
 		new ImageminPlugin(),
 		new ImageminWebpWebpackPlugin({
 			config:[
 				{
-					test: /assets\/img/
+					test: /assets/
 				}
 			],
 			detailedLogs: true

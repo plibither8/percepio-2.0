@@ -1,0 +1,181 @@
+@require "imports/base"
+
+html, body
+	overflow-x: hidden
+
+.wave-background
+	position: absolute
+	z-index: 0
+	height: 70vh
+
+	svg
+		height: 100%
+		position: relative
+		left: -30%
+
+main
+	width: 95%
+	max-width: 1300px
+	margin: 0 auto
+	margin-bottom: 100px
+
+section.header
+	display: flex
+	width: 100%
+	min-height: 50vh
+	align-items: center
+	justify-content: space-between
+
+	.text
+		width: 60%
+		display: flex
+		flex-direction: column
+		background: #000648a8
+		padding: 20px
+		margin: 20px 0
+		border-radius: 10px
+		max-width: 700px
+		box-shadow: 0 0 30px #000648a8;
+
+		h2
+			color: white
+			font-size: 3rem
+			text-shadow: 0 2px 20px rgba(0,0,0,.16)
+			font-weight: 600
+			line-height: 1.2
+			font-size: 50px
+			color: #fff
+			display: block
+
+		p
+			font-size: 20px
+			line-height: 1.7
+			color: rgba(255,255,255,.9)
+			text-shadow: 0 2px 20px rgba(0,0,0,.16)
+			margin: 20px 0
+
+		a
+			display: inline-block
+			padding: 10px 20px
+			font-size: 20px
+			background: white
+			border: none
+			border-radius: 5px
+			width: fit-content
+			cursor: pointer
+			font-family: var(--default-font-stack)
+			font-weight: 600
+			color: #000648
+
+	.img
+		width: 40%
+		img
+			width: 100%
+			height: auto
+			padding: 20px
+
+	@media only screen and (max-width:1000px)
+		flex-direction: column-reverse
+		.text, .img
+			width 100%
+		.img
+			margin: 10vh 0
+
+section.cards
+	width: 100%
+	display: flex
+	flex-wrap: wrap
+	justify-content: center
+	padding-bottom: 20px
+
+	.card
+		min-width: 250px
+		display: flex
+		flex-direction: column
+		align-items: center
+		justify-content: flex-start
+		margin: 30px
+		padding: 20px
+		border-radius: 7px
+		box-shadow: 0 0 40px #dedede
+		transition: 0.2s box-shadow ease-in-out, 0.2s transform ease-in-out
+
+		&:hover
+			box-shadow: 0 0 50px #ccc
+			transform: scale(1.025)
+
+		img
+			height: 130px
+			width: auto
+			padding: 0 20px 20px 20px
+			filter: drop-shadow(0 0 10px #39899355)
+
+		h3
+			font-size: 27px
+			font-weight: 400
+			color: #222
+
+section.video
+	h2
+		text-align: center
+		font-size: 2.5rem
+		font-weight: 600
+		color: #222
+		margin: 60px 0
+
+	iframe
+		height: 35vh
+		width: 50vh
+		border-radius: 10px
+		box-shadow: 0 0 30px #ccc
+		margin: 0 auto
+		display: block
+
+section.poster
+	h2
+		text-align: center
+		font-size: 2.5rem
+		font-weight: 600
+		color: #222
+		margin: 60px 0
+
+	img
+		height: 70vh
+		display: block
+		margin: 0 auto
+		border-radius: 10px
+		box-shadow: 0 0 20px #ddd
+
+	a
+		display: inline-block
+		padding: 10px 20px
+		font-size: 20px
+		background: white
+		border: none
+		border-radius: 5px
+		width: fit-content
+		cursor: pointer
+		font-family: var(--default-font-stack)
+		font-weight: 600
+		color: #000648
+
+.hr::after
+	content: ""
+	display: block
+	height: 2px
+	opacity: .3
+	position: absolute
+	width: 100%
+	background: linear-gradient(-90deg, #fff 0, #178a9a 5%, #178a9a 90%, #fff 100%)
+	align-self: flex-end
+	margin-top: 40px
+
+footer
+	width: 95%
+	max-width: 400px
+	margin: 0 auto
+	font-size: 20px
+	text-align: center
+	padding: 0 0 50px 0 
+
+@import "imports/nav"

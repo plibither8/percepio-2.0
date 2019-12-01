@@ -1,0 +1,125 @@
+doctype html
+
+head
+	include ./includes/head.pug
+	title About &middot; Percepio 2.0
+	link(rel="stylesheet" href="css/about.css")
+	script(src="js/about.js" defer)
+
+body
+	.wave-background
+		include ./includes/wave.svg
+
+	nav
+		.nav__logo.nav__link
+			a(href="/") Percepio 2.0
+		ul.nav__links-container
+			li.nav__link
+				a(href="/about") About
+			li.nav__link
+				a(href="/about#timeline") Team
+			li.nav__link
+				a(href="/#video") Video
+			li.nav__link
+				a(href="/#poster") Poster
+			li.nav__link
+				a(href="https://github.com/plibither8/percepio-2.0") Code
+
+	main
+
+		section.about
+
+			h1 About
+
+			h2 Problem Statement
+
+			p.source "If you file your waste-paper basket for fifty years, you have a public library."
+			p.by &mdash; Tony Benn
+			p An average of 300 million tons of paper is produced each year globally.Paper wastage is a very serious issue that most nations face today. Unfortunately,  India ranks first in the list of countries where going paperless and waste paper disposal has become the need of the hour.
+			p While we know that going completely paperless is neither a feasible option nor a logical one as there are areas to which paper is still the best medium for documentation, but digitizing everyday things like memos, notes during lectures, or something that you’d normally jot down in your notepads can be digitized easily. Even small measures can be helpful in cutting down the waste paper generated considerably.
+			p A lot of paper is wasted just in noting down trivial things like phone numbers, memos, notes etc.
+			p And not all of this paper is recycled. Therefore focussing on this problem becomes just as important as minimizing paper wastage and recycling used paper.
+
+			h2 How is our prototype different from previously existing solutions?
+
+			ul
+				li Our prototype aims at removing the need of a pen and paper to write anything down. In other devices , usually a stylus is used on a screen for writing. With this prototype,  any surface can be used as 'paper' and one can write using their finger as a stylus
+				li Our prototype consists of a wearable(specs) which is comfortable and is simple to use.
+				li Writing in air is not only a million times cooler, but also is convenient
+
+			h2 Scope:
+			ul
+				li we planned to power the device using a power bank that would be mounted on the specs. But we would need to make a battery of the appropriate size with power regulator.
+				li For proof of concept, we only implemented digit recognition.  The device would have character recognition for all the letters of the alphabet as well as the digits
+				li Gesture recognition for space, punctuation and clear screen. To control the start and stop of character recognition.
+
+		section#timeline.timeline
+
+			h1 Timeline
+
+			.graph
+				.node
+					.date
+						.circle
+						h2 21st October 2019
+					.para
+						p Started off by finding implementations using OpenCV. The various methods that are already available to implement what we wanted to do.
+				.node
+					.date
+						.circle
+						h2 27th October 2019
+					.para
+						p Started looking for hardware to run the software. We initially thought about using Raspberry Pi, then later thought about using a webcam and ESP32-cam combo.
+				.node
+					.date
+						.circle
+						h2 7th November 2019 &mdash; 17th November 2019
+					.para
+						p Worked on methods to make the finger tracking software better and the integration with hardware.
+				.node
+					.date
+						.circle
+						h2 17th November 2019 onwards
+					.para
+						p Designing the glasses.
+				.node
+					.date
+						.circle
+						h2 26th November 2019 &mdash; 28th November 2019
+					.para
+						p Worked on getting the recognition done and putting together all the pieces.
+
+		section.proposal
+
+			h1 Proposal
+
+			p External link to our proposal:&nbsp;
+				a(href="https://docs.google.com/document/d/12w-vetbE5VKiHelgHD2_RiXAPHvXexhXKUd1rx02VgY/edit#heading=h.26zgb4bwj5zd" target="_blank") Percepio 2.0
+
+		section.team
+
+			h1 Team
+
+			.gallery
+
+				.card
+					picture
+						source(type="image/webp" srcset="/assets/buxy.webp")
+						source(type="image/jpeg" srcset="/assets/buxy.jpg")
+						img(src="/assets/buxy.jpg")
+					h2 Sudarshan Buxy
+					p 2019275
+				.card
+					picture
+						source(type="image/webp" srcset="/assets/mihir.webp")
+						source(type="image/jpeg" srcset="/assets/mihir.jpg")
+						img(src="/assets/mihir.jpg")
+					h2 Mihir Chaturvedi
+					p 2019061
+				.card
+					picture
+						source(type="image/webp" srcset="/assets/jhu.webp")
+						source(type="image/jpeg" srcset="/assets/jhu.jpg")
+						img(src="/assets/jhu.jpg")
+					h2 Shragvi Sidharth Jha
+					p 2019207

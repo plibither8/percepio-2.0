@@ -1,0 +1,73 @@
+doctype html
+
+head
+	include ./includes/head.pug
+	title Percepio 2.0 &middot; Taking notes made simple: in the air, on the go
+	link(rel="stylesheet" href="css/index.css")
+	script(src="js/index.js" defer)
+
+body
+	.wave-background
+		include ./includes/wave.svg
+
+	nav
+		.nav__logo.nav__link
+			a(href="/") Percepio 2.0
+		ul.nav__links-container
+			li.nav__link
+				a(href="/about") About
+			li.nav__link
+				a(href="/about#timeline") Team
+			li.nav__link
+				a(href="/#video") Video
+			li.nav__link
+				a(href="/#poster") Poster
+			li.nav__link
+				a(href="https://github.com/plibither8/percepio-2.0") Code
+
+	main
+
+		section.header
+			.text
+				h2 Taking notes made simple:
+				h2 In the air, on the go
+				p Percepio 2.0 removes the need of a pen and paper, or a screen to jot down anything: it's fast, accessible and easy-to-use.
+				a(href="/about") Learn more
+			.img
+				picture
+					source(type="image/webp" srcset="/assets/product.webp")
+					source(type="image/png" srcset="/assets/product.png")
+					img(src="/assets/product.png")
+
+		section.cards.hr
+
+			.card
+				img(src="assets/recycle-sign.svg")
+				h3 Save paper
+			
+			.card
+				img(src="assets/edit.svg")
+				h3 Write on-the-go
+
+			.card
+				img(src="assets/clock.svg")
+				h3 Save time
+
+		section#video.video.hr
+
+			h2 Watch our video
+
+			iframe#ytplayer(type="text/html" src="https://www.youtube.com/embed/-2kd9ooxOGQ?controls=0&disablekb=1" frameborder="0" allowfullscreen)
+
+		section#poster.poster.hr
+
+			h2 Poster
+			picture
+				source(type="image/webp" srcset="/assets/poster.webp")
+				source(type="image/png" srcset="/assets/poster.png")
+				img(src="/assets/poster.png")
+
+			a(download href="/assets/poster.pdf") Download PDF
+
+	footer
+		p T23 | Designed, conceptualised and built by Sudarshan Buxy, Mihir Chaturvedi and Shragvi Sidharth Jha
